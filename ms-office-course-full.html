@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Full MS Office Course — Ram sir | DeviX Solutions</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    /* Reuse dark style, colors, layout from Java Course */
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Montserrat', 'Segoe UI', Arial, sans-serif;
+      background: #17203a;
+      color: #eaf2fb;
+      min-height: 100vh;
+      line-height: 1.7;
+      transition: background 0.3s;
+    }
+    a { color: #1ec6b5; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    ::selection { background: #ff8c42; color: #fff; }
+    ::-webkit-scrollbar { width: 10px; background: #212c44; }
+    ::-webkit-scrollbar-thumb { background: #1ec6b5; border-radius: 8px; }
+    .navbar {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 18px 32px;
+      background: linear-gradient(90deg,#1e253b 65%, #192033 100%);
+      box-shadow: 0 2px 18px rgba(30,30,60,0.13);
+      z-index: 12; position: sticky; top:0;
+    }
+    .navbar .brand {
+      display: flex; align-items: center; font-size: 1.5em; font-weight: 800;
+      color: #ff8c42; gap: 18px; letter-spacing: 1.5px;
+    }
+    .navbar .brand svg { width: 38px; height: 38px; }
+    .navbar .navlinks { display: flex; gap: 28px; }
+    .navbar .navlinks a {
+      color: #1ec6b5; font-weight: 600; font-size: 1.09em;
+      border-bottom: 2.5px solid transparent; padding-bottom: 2px;
+      letter-spacing: 0.7px; transition: all 0.18s;
+    }
+    .navbar .navlinks a.active, .navbar .navlinks a:hover {
+      color: #ff8c42; border-bottom: 2.5px solid #ff8c42;
+    }
+    .container { display: flex; min-height: calc(100vh - 70px);}
+    .sidebar {
+      width: 270px;
+      background: linear-gradient(120deg,#1b273a 60%, #1a2032 100%);
+      padding: 22px 0;
+      overflow-y: auto;
+      transition: left 0.33s cubic-bezier(.41,1.72,.68,.91);
+      position: sticky; top: 65px;
+      height: calc(100vh - 65px);
+      z-index: 15;
+      border-right: 2px solid #1ec6b5;
+    }
+    .sidebar.hide { left: -340px; }
+    @media (max-width: 900px) {
+      .sidebar { position: fixed; top: 65px; left: -340px; height: calc(100vh - 65px); z-index: 100; box-shadow: 2px 0 16px #0005;}
+      .sidebar.show { left: 0; }
+      .container { flex-direction: column; }
+    }
+    .sidebar h2 { color: #ff8c42; font-size: 1.14em; padding: 8px 30px 7px; font-weight: 700; letter-spacing: 0.5px; margin-bottom: 5px;}
+    .sidebar ul { list-style: none; padding-left: 16px; }
+    .sidebar ul li { margin-bottom: 7px; border-left: 2.5px solid transparent; border-radius: 7px 0 0 7px; transition: background 0.18s, border 0.2s;}
+    .sidebar ul li.active, .sidebar ul li:hover { border-left: 2.5px solid #ff8c42; background: #1d3046;}
+    .sidebar ul li a {
+      display: flex; align-items: center; gap: 10px;
+      color: #cbe9ec; padding: 7px 13px 7px 0; border-radius: 7px;
+      font-size: 1em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+      font-weight: 500; transition: background 0.13s, color 0.13s;
+    }
+    .sidebar ul li a svg { width: 19px; height: 19px; vertical-align: middle; }
+    .sidebar-toggle { display: none; margin-right: 1.2em; background: none; border: none; outline: none; color: #ff8c42; font-size: 2.1em; cursor: pointer; z-index: 300; }
+    @media (max-width: 900px) { .sidebar-toggle { display: block; } }
+    .main-content {
+      flex: 1; padding: 38px 36px 64px 36px;
+      display: flex; flex-direction: column; gap: 44px;
+      min-width: 0; transition: padding 0.3s; background: none;
+    }
+    @media (max-width: 700px) { .main-content { padding: 17px 2vw 30px 2vw; gap: 19px;} .sidebar { width: 88vw; } }
+    .card {
+      background: linear-gradient(125deg, #223151 70%, #203047 100%);
+      border-radius: 15px;
+      box-shadow: 0 5px 38px -10px #112334b0;
+      padding: 35px 30px 24px 28px;
+      max-width: 980px;
+      margin: 0 auto 18px auto;
+      border: 2px solid #1ec6b5;
+      animation: fadeIn 0.7s cubic-bezier(.41,1.72,.68,.91);
+      position: relative;
+      overflow: visible;
+      transition: background 0.25s;
+    }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(30px);} to   { opacity: 1; transform: none;} }
+    .card .card-header { display: flex; align-items: center; gap: 14px; margin-bottom: 16px;}
+    .card .card-icon {
+      background: linear-gradient(135deg, #ff8c42 30%, #1ec6b5 100%);
+      border-radius: 11px;
+      padding: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 2px 13px #ff8c424c;
+    }
+    .card .card-header .card-title { font-size: 1.18em; color: #ff8c42; font-weight: 800; letter-spacing: 0.6px;}
+    .card .card-header .card-tag {
+      padding: 3px 12px;
+      background: #1ec6b5;
+      color: #17203a;
+      border-radius: 12px;
+      margin-left: 15px;
+      font-size: 0.98em;
+      font-weight: 700;
+    }
+    .card .card-section { margin-bottom: 14px; }
+    .card .card-section:last-child { margin-bottom: 0;}
+    .card .section-title { font-size: 1.04em; color: #1ec6b5; font-weight: 700; margin-bottom: 7px; letter-spacing: 0.1em;}
+    .card .theory { color: #eaf2fb; margin-bottom: 12px; font-size: 1.03em; }
+    .card .reallife {
+      background: #293c5f;
+      border-left: 5px solid #ff8c42;
+      border-radius: 7px;
+      padding: 11px 13px 10px 17px;
+      margin-bottom: 9px;
+      font-size: 1.01em;
+      color: #1ec6b5;
+    }
+    .footer {
+      font-size: 1em; color: #ff8c42; padding: 28px 0 17px; text-align: center; opacity: 0.80;
+    }
+    .sidebar .sidebar-section { margin-bottom: 26px; }
+  </style>
+</head>
+<body>
+  <!-- Navbar -->
+  <nav class="navbar">
+    <button class="sidebar-toggle" id="sidebarToggle" title="Show topics">&#9776;</button>
+    <span class="brand">
+      <!-- MS Office logo: stylized squares -->
+      <svg viewBox="0 0 38 38">
+        <rect x="1" y="1" width="16" height="16" fill="#ff8c42" rx="3"/>
+        <rect x="21" y="1" width="16" height="16" fill="#1ec6b5" rx="3"/>
+        <rect x="1" y="21" width="16" height="16" fill="#3e7ddb" rx="3"/>
+        <rect x="21" y="21" width="16" height="16" fill="#f8e14c" rx="3"/>
+      </svg>
+      MS Office Course by Ram sir | DeviX Solutions
+    </span>
+    <span class="navlinks">
+      <a href="#ms-office" class="active">MS Office</a>
+      <a href="#ms-word">MS Word</a>
+      <a href="#ms-excel">MS Excel</a>
+      <a href="#ms-powerpoint">PowerPoint</a>
+      <a href="#about">About</a>
+    </span>
+  </nav>
+  <div class="container">
+    <!-- Sidebar (Collapsible) -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-section">
+        <h2>MS Office</h2>
+        <ul id="officeTopics"></ul>
+      </div>
+      <div class="sidebar-section">
+        <h2>MS Word</h2>
+        <ul id="wordTopics"></ul>
+      </div>
+      <div class="sidebar-section">
+        <h2>MS Excel</h2>
+        <ul id="excelTopics"></ul>
+      </div>
+      <div class="sidebar-section">
+        <h2>PowerPoint</h2>
+        <ul id="pptTopics"></ul>
+      </div>
+    </aside>
+    <!-- Main Content -->
+    <main class="main-content" id="mainContent">
+      <!-- JS inserts cards here -->
+    </main>
+  </div>
+  <div class="footer">
+    &copy; 2025 Course by Ram sir | DeviX Solutions. All rights reserved.
+  </div>
+  <script>
+    // MS Office Fundamentals Topics
+    const officeTopics = [
+      {
+        id: "intro-office",
+        title: "Introduction to MS Office",
+        icon: `<svg viewBox="0 0 24 24"><rect x="3" y="3" width="8" height="8" fill="#ff8c42"/><rect x="13" y="3" width="8" height="8" fill="#1ec6b5"/><rect x="3" y="13" width="8" height="8" fill="#3e7ddb"/><rect x="13" y="13" width="8" height="8" fill="#f8e14c"/></svg>`,
+        tag: "Core",
+        theory: `Overview of Microsoft Office Suite and its main programs: Word, Excel, PowerPoint, Outlook, and more. Understanding versions (2010–365), licensing, and the Office interface.`,
+        code: ``,
+        real: `Microsoft Office is used in businesses, schools, and homes for document creation, data analysis, and presentations.`
+      },
+      {
+        id: "office-interface",
+        title: "Office Interface & Productivity",
+        icon: `<svg viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" fill="#1ec6b5"/></svg>`,
+        tag: "Core",
+        theory: `Learning the Ribbon, Tabs, Quick Access Toolbar, Backstage View, and using Office-wide productivity features like Clipboard, Format Painter, and Templates.`,
+        code: ``,
+        real: `Format Painter is used in all Office apps to quickly copy formatting from one place and apply it elsewhere.`
+      },
+      {
+        id: "cloud-collab",
+        title: "OneDrive & Collaboration",
+        icon: `<svg viewBox="0 0 24 24"><ellipse cx="12" cy="12" rx="10" ry="7" fill="#3e7ddb"/></svg>`,
+        tag: "Core",
+        theory: `Saving and sharing documents on OneDrive. Real-time collaboration and comments. Version history and restoring files.`,
+        code: ``,
+        real: `A team can edit a Word document together, see each other's changes, and chat using comments.`
+      },
+      {
+        id: "office-security",
+        title: "Security & Accessibility",
+        icon: `<svg viewBox="0 0 24 24"><rect x="7" y="7" width="10" height="10" fill="#ff8c42"/><circle cx="12" cy="12" r="3" fill="#1ec6b5"/></svg>`,
+        tag: "Core",
+        theory: `Password-protecting documents, using protected view, digital signatures, and accessibility features (screen reader, alt text, high contrast).`,
+        code: ``,
+        real: `Sensitive Excel files can be encrypted and shared securely with select users only.`
+      }
+    ];
+
+    // MS Word Topics
+    const wordTopics = [
+      {
+        id: "word-basics",
+        title: "Word Basics & Navigation",
+        icon: `<svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" fill="#3e7ddb"/><text x="7" y="17" font-size="10" fill="#fff" font-family="monospace" font-weight="700">W</text></svg>`,
+        tag: "Core",
+        theory: `Creating, saving, and opening documents. Navigation using mouse and keyboard. Using zoom, split, and multiple windows.`,
+        code: ``,
+        real: `Open Word, create a resume, save to Documents folder, and print.`
+      },
+      {
+        id: "text-format",
+        title: "Text & Paragraph Formatting",
+        icon: `<svg viewBox="0 0 24 24"><rect x="5" y="5" width="14" height="14" fill="#ff8c42"/><text x="9" y="17" font-size="10" fill="#fff" font-family="monospace" font-weight="700">Aa</text></svg>`,
+        tag: "Core",
+        theory: `Setting font, size, color, bold/italic/underline, paragraph alignment, line spacing, bullets, and numbering.`,
+        code: `Ctrl+B = Bold<br>Ctrl+I = Italic<br>Ctrl+U = Underline`,
+        real: `Format headings for emphasis using bold and larger font size.`
+      },
+      {
+        id: "page-layout",
+        title: "Page Layout & Design",
+        icon: `<svg viewBox="0 0 24 24"><rect x="5" y="5" width="14" height="14" fill="#f8e14c"/></svg>`,
+        tag: "Core",
+        theory: `Margins, orientation, size, columns, page breaks, headers, footers, and page numbers.`,
+        code: ``,
+        real: `Set narrow margins for a report to fit more content per page.`
+      },
+      {
+        id: "tables-images",
+        title: "Tables, Images & Objects",
+        icon: `<svg viewBox="0 0 24 24"><rect x="4" y="4" width="6" height="6" fill="#1ec6b5"/><rect x="14" y="4" width="6" height="6" fill="#ff8c42"/><rect x="4" y="14" width="6" height="6" fill="#f8e14c"/><rect x="14" y="14" width="6" height="6" fill="#3e7ddb"/></svg>`,
+        tag: "Core",
+        theory: `Inserting and formatting tables, pictures, shapes, SmartArt, and charts. Wrapping text around objects.`,
+        code: ``,
+        real: `Insert a table to organize expenses in a letter.`
+      },
+      {
+        id: "find-replace",
+        title: "Find, Replace, Proofing",
+        icon: `<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="7" fill="#3e7ddb"/><rect x="16" y="16" width="4" height="4" fill="#ff8c42"/></svg>`,
+        tag: "Core",
+        theory: `Find, replace, spelling and grammar check, thesaurus, word count.`,
+        code: `Ctrl+F = Find<br>Ctrl+H = Replace`,
+        real: `Replace all "colour" with "color" for US English documents.`
+      },
+      {
+        id: "styles-refs",
+        title: "Styles, References & TOC",
+        icon: `<svg viewBox="0 0 24 24"><rect x="5" y="5" width="14" height="14" fill="#1ec6b5"/></svg>`,
+        tag: "Advanced",
+        theory: `Applying styles, creating and updating Table of Contents, using footnotes, endnotes, and cross-references.`,
+        code: ``,
+        real: `Generate a Table of Contents for a long thesis using heading styles.`
+      },
+      {
+        id: "mail-merge",
+        title: "Mail Merge & Forms",
+        icon: `<svg viewBox="0 0 24 24"><rect x="7" y="7" width="10" height="10" fill="#ff8c42"/><circle cx="12" cy="12" r="3" fill="#f8e14c"/></svg>`,
+        tag: "Advanced",
+        theory: `Creating personalized letters, envelopes, and labels using recipients lists. Designing fillable forms with controls.`,
+        code: ``,
+        real: `Send customized invitations to a list of contacts with Mail Merge.`
+      },
+      {
+        id: "macros-word",
+        title: "Macros & Automation (Word)",
+        icon: `<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8" fill="#3e7ddb"/><rect x="9" y="9" width="6" height="6" fill="#ff8c42"/></svg>`,
+        tag: "Advanced",
+        theory: `Recording and running macros. Introduction to VBA for automating repetitive tasks in Word.`,
+        code: ``,
+        real: `Create a macro to insert a formatted signature block at the end of documents.`
+      }
+    ];
+
+    // Excel Topics
+    const excelTopics = [
+      {
+        id: "excel-basics",
+        title: "Excel Basics & Data Entry",
+        icon: `<svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" fill="#1ec6b5"/><text x="7" y="17" font-size="10" fill="#fff" font-family="monospace" font-weight="700">X</text></svg>`,
+        tag: "Core",
+        theory: `Workbooks, worksheets, rows, columns, cells. Entering, editing, and autofilling data. Cell referencing (A1, B2).`,
+        code: `Ctrl+Arrow = Fast navigation<br>Ctrl+S = Save`,
+        real: `Track monthly expenses in an Excel sheet.`
+      },
+      {
+        id: "cell-format",
+        title: "Cell Formatting & Layout",
+        icon: `<svg viewBox="0 0 24 24"><rect x="5" y="5" width="14" height="14" fill="#ff8c42"/><text x="9" y="17" font-size="10" fill="#fff" font-family="monospace" font-weight="700">123</text></svg>`,
+        tag: "Core",
+        theory: `Number formats, date/time, currency, percentage, conditional formatting, borders, fills, cell styles.`,
+        code: ``,
+        real: `Highlight overdue payments in red using conditional formatting.`
+      },
+      {
+        id: "formulas-funcs",
+        title: "Formulas & Functions",
+        icon: `<svg viewBox="0 0 24 24"><rect x="5" y="5" width="14" height="14" fill="#f8e14c"/><text x="9" y="17" font-size="10" fill="#3e7ddb" font-family="monospace" font-weight="700">fx</text></svg>`,
+        tag: "Core",
+        theory: `Basic formulas (+, -, *, /). Built-in functions: SUM, AVERAGE, MIN, MAX, COUNT, IF, VLOOKUP, HLOOKUP, CONCAT, etc.`,
+        code: `=SUM(A1:A10)<br>=IF(B2>100, "High", "Low")`,
+        real: `Calculate total sales and determine if targets are met using IF.`
+      },
+      {
+        id: "charts-tables",
+        title: "Charts, Tables & Data Tools",
+        icon: `<svg viewBox="0 0 24 24"><rect x="4" y="15" width="4" height="5" fill="#3e7ddb"/><rect x="10" y="10" width="4" height="10" fill="#1ec6b5"/><rect x="16" y="7" width="4" height="13" fill="#ff8c42"/></svg>`,
+        tag: "Core",
+        theory: `Creating data tables, sorting, filtering, and visualizing data with bar, line, pie, and combo charts.`,
+        code: ``,
+        real: `Create a pie chart for spending categories.`
+      },
+      {
+        id: "pivot-advanced",
+        title: "Pivot Tables & Advanced Data",
+        icon: `<svg viewBox="0 0 24 24"><rect x="5" y="5" width="14" height="14" fill="#1ec6b5"/></svg>`,
+        tag: "Advanced",
+        theory: `Summarizing data with Pivot Tables, Slicers, and Pivot Charts. Using advanced functions: INDEX, MATCH, XLOOKUP, SUMIFS, COUNTIFS.`,
+        code: ``,
+        real: `Analyze sales by region and month with a Pivot Table.`
+      },
+      {
+        id: "data-validation",
+        title: "Data Validation & Protection",
+        icon: `<svg viewBox="0 0 24 24"><rect x="7" y="7" width="10" height="10" fill="#ff8c42"/><circle cx="12" cy="12" r="3" fill="#f8e14c"/></svg>`,
+        tag: "Advanced",
+        theory: `Restricting data entry with validation rules, drop-downs, and protecting worksheets/workbooks.`,
+        code: ``,
+        real: `Allow only dates in a column and lock formula cells.`
+      },
+      {
+        id: "macros-excel",
+        title: "Macros & VBA (Excel)",
+        icon: `<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8" fill="#3e7ddb"/><rect x="9" y="9" width="6" height="6" fill="#ff8c42"/></svg>`,
+        tag: "Advanced",
+        theory: `Recording macros to automate tasks. Editing macros. Introduction to Visual Basic for Applications (VBA) in Excel.`,
+        code: ``,
+        real: `Automate monthly report formatting with a macro.`
+      }
+    ];
+
+    // PowerPoint Topics
+    const pptTopics = [
+      {
+        id: "ppt-basics",
+        title: "PowerPoint Basics & Slides",
+        icon: `<svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" fill="#f8e14c"/><text x="7" y="17" font-size="10" fill="#3e7ddb" font-family="monospace" font-weight="700">P</text></svg>`,
+        tag: "Core",
+        theory: `Creating new presentations, slide layouts, and using themes/templates. Navigating between slides.`,
+        code: ``,
+        real: `Start a new presentation using a professional template and add your slides.`
+      },
+      {
+        id: "ppt-text-img",
+        title: "Text, Images & Media",
+        icon: `<svg viewBox="0 0 24 24"><rect x="5" y="5" width="14" height="14" fill="#3e7ddb"/><circle cx="12" cy="12" r="4" fill="#1ec6b5"/></svg>`,
+        tag: "Core",
+        theory: `Adding and formatting text, images, shapes, icons, videos, and audio. Layering and aligning objects.`,
+        code: ``,
+        real: `Insert a company logo and align it on all slides.`
+      },
+      {
+        id: "ppt-design",
+        title: "Transitions, Animations & Design",
+        icon: `<svg viewBox="0 0 24 24"><rect x="5" y="5" width="14" height="14" fill="#ff8c42"/></svg>`,
+        tag: "Core",
+        theory: `Applying slide transitions, object animations, using the Design Ideas tool, customizing backgrounds.`,
+        code: ``,
+        real: `Add a Fade transition and animate bullet points on click.`
+      },
+      {
+        id: "ppt-charts",
+        title: "Charts, Tables & SmartArt",
+        icon: `<svg viewBox="0 0 24 24"><rect x="4" y="15" width="4" height="5" fill="#3e7ddb"/><rect x="10" y="10" width="4" height="10" fill="#1ec6b5"/><rect x="16" y="7" width="4" height="13" fill="#ff8c42"/></svg>`,
+        tag: "Core",
+        theory: `Inserting and customizing tables, charts, and SmartArt for visual information.`,
+        code: ``,
+        real: `Create a process diagram using SmartArt.`
+      },
+      {
+        id: "ppt-present",
+        title: "Slide Show & Presentation Skills",
+        icon: `<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="7" fill="#ff8c42"/></svg>`,
+        tag: "Core",
+        theory: `Running slide shows, using Presenter View, adding speaker notes, rehearsing timings, laser pointer.`,
+        code: `F5 = Start Slide Show`,
+        real: `Practice your talk with Presenter View and notes visible only to you.`
+      },
+      {
+        id: "ppt-collab",
+        title: "Collaboration & Export",
+        icon: `<svg viewBox="0 0 24 24"><ellipse cx="12" cy="12" rx="10" ry="7" fill="#1ec6b5"/></svg>`,
+        tag: "Advanced",
+        theory: `Co-authoring presentations, adding and resolving comments, exporting to PDF/video, embedding fonts/media.`,
+        code: ``,
+        real: `Download your presentation as a video for uploading to YouTube.`
+      },
+      {
+        id: "macros-ppt",
+        title: "Macros & Advanced Automation (PPT)",
+        icon: `<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8" fill="#3e7ddb"/><rect x="9" y="9" width="6" height="6" fill="#ff8c42"/></svg>`,
+        tag: "Advanced",
+        theory: `Automating slide creation and repetitive tasks with macros and VBA in PowerPoint.`,
+        code: ``,
+        real: `Auto-generate slides for each student in a class roster.`
+      }
+    ];
+
+    // Sidebar Population
+    function makeSidebarList(topics) {
+      return topics.map(t =>
+        `<li><a href="#${t.id}" data-topic="${t.id}">${t.icon} ${t.title}</a></li>`
+      ).join('');
+    }
+    document.getElementById('officeTopics').innerHTML = makeSidebarList(officeTopics);
+    document.getElementById('wordTopics').innerHTML = makeSidebarList(wordTopics);
+    document.getElementById('excelTopics').innerHTML = makeSidebarList(excelTopics);
+    document.getElementById('pptTopics').innerHTML = makeSidebarList(pptTopics);
+
+    // Cards Population
+    function makeCard(t, idx) {
+      return `<section class="card" id="${t.id}">
+        <div class="card-header">
+          <div class="card-icon">${t.icon}</div>
+          <span class="card-title">${t.title}</span>
+          <span class="card-tag">${t.tag}</span>
+        </div>
+        <div class="card-section">
+          <div class="section-title">Theory & Explanation</div>
+          <div class="theory">${t.theory}</div>
+        </div>
+        ${t.code ? `<div class="card-section">
+          <div class="section-title">Tips & Shortcuts</div>
+          <div class="theory">${t.code}</div>
+        </div>` : ""}
+        <div class="card-section">
+          <div class="section-title">Real-life Example</div>
+          <div class="reallife">${t.real}</div>
+        </div>
+      </section>`;
+    }
+
+    function renderContent() {
+      let html = `<a id="ms-office"></a>`;
+      officeTopics.forEach((t, i) => { html += makeCard(t, i); });
+      html += `<a id="ms-word"></a>`;
+      wordTopics.forEach((t, i) => { html += makeCard(t, i); });
+      html += `<a id="ms-excel"></a>`;
+      excelTopics.forEach((t, i) => { html += makeCard(t, i); });
+      html += `<a id="ms-powerpoint"></a>`;
+      pptTopics.forEach((t, i) => { html += makeCard(t, i); });
+      html += `<a id="about"></a>
+      <section class="card" id="about-card">
+        <div class="card-header">
+          <div class="card-icon">
+            <svg viewBox="0 0 24 24"><ellipse cx="12" cy="12" rx="10" ry="9" fill="#1ec6b5"/><rect x="8" y="10" width="8" height="4" rx="2" fill="#ff8c42"/></svg>
+          </div>
+          <span class="card-title">About This Course</span>
+          <span class="card-tag">Info</span>
+        </div>
+        <div class="card-section">
+          <div class="theory">
+            Welcome to <b>Full MS Office Course — Ram sir | DeviX Solutions</b>!<br>
+            This course covers <b>core</b> and <b>advanced</b> MS Office (Word, Excel, PowerPoint) topics. Each topic includes theory, practical tips, and real-life examples, all in a modern, beautiful dark-themed site.<br>
+            <br>
+            <b>How to use:</b> <br>
+            • Use the <span style="color:#ff8c42;">sidebar</span> to jump to any topic.<br>
+            • Read and practice real-world skills for office, business, or academic use.<br>
+            <br>
+            <b>Made with ❤️ by Ram sir at DeviX Solutions, 2025.</b>
+          </div>
+        </div>
+      </section>`;
+      document.getElementById('mainContent').innerHTML = html;
+    }
+    renderContent();
+
+    // Sidebar Active State
+    function setActiveSidebar() {
+      let hash = window.location.hash.substring(1);
+      let allLinks = document.querySelectorAll('.sidebar ul li');
+      allLinks.forEach(li => li.classList.remove('active'));
+      if(hash) {
+        let activeLi = document.querySelector(`.sidebar a[data-topic="${hash}"]`);
+        if(activeLi) activeLi.parentElement.classList.add('active');
+      }
+    }
+    window.addEventListener('hashchange', setActiveSidebar);
+    setActiveSidebar();
+
+    // Navbar Highlight
+    function setNavActive() {
+      let hash = window.location.hash;
+      let navs = document.querySelectorAll('.navlinks a');
+      navs.forEach(a => a.classList.remove('active'));
+      if(hash.includes('word')) navs[1].classList.add('active');
+      else if(hash.includes('excel')) navs[2].classList.add('active');
+      else if(hash.includes('powerpoint')) navs[3].classList.add('active');
+      else if(hash.includes('about')) navs[4].classList.add('active');
+      else navs[0].classList.add('active');
+    }
+    window.addEventListener('hashchange', setNavActive);
+    setNavActive();
+
+    // Sidebar Toggle on Mobile
+    const sidebar = document.getElementById('sidebar');
+    const sidebarToggle = document.getElementById('sidebarToggle');
+    function closeSidebarOnNav() { if(window.innerWidth < 900) sidebar.classList.remove('show'); }
+    sidebarToggle.onclick = function() { sidebar.classList.toggle('show'); };
+    sidebar.addEventListener('click', function(e) {
+      if(e.target.tagName === 'A') closeSidebarOnNav();
+    });
+    window.addEventListener('resize', () => {
+      if(window.innerWidth >= 900) sidebar.classList.remove('show');
+    });
+
+    // Smooth Scroll for Sidebar/Nav
+    document.querySelectorAll('.sidebar a, .navlinks a').forEach(link => {
+      link.addEventListener('click', function(e) {
+        let to = this.getAttribute('href');
+        if(to && to.startsWith('#')) {
+          e.preventDefault();
+          let el = document.querySelector(to);
+          if(el) {
+            window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY - 60, behavior: "smooth" });
+            history.replaceState(null, null, to);
+          }
+        }
+      });
+    });
+
+    // Animate Cards on Scroll
+    function animateCardsOnScroll() {
+      let cards = document.querySelectorAll('.card');
+      let winH = window.innerHeight;
+      cards.forEach(card => {
+        let rect = card.getBoundingClientRect();
+        if(rect.top < winH - 60) card.style.opacity = 1;
+        else card.style.opacity = 0.6;
+      });
+    }
+    window.addEventListener('scroll', animateCardsOnScroll);
+    animateCardsOnScroll();
+
+    // Keyboard Navigation
+    document.addEventListener('keyup', function(e) {
+      if(e.key === "Escape" && window.innerWidth < 900) sidebar.classList.remove('show');
+    });
+
+    // Accessibility: Focus on content after nav
+    document.querySelectorAll('.sidebar a, .navlinks a').forEach(link => {
+      link.addEventListener('click', function() {
+        setTimeout(() => {
+          let hash = this.getAttribute('href');
+          if(hash && document.querySelector(hash))
+            document.querySelector(hash).focus();
+        }, 500);
+      });
+    });
+  </script>
+</body>
+</html>
